@@ -1,2 +1,2 @@
 # R5T.Scotia
-A user secrets file combination library combining service libraries.
+A custom user secrets file combination library combining service libraries.
