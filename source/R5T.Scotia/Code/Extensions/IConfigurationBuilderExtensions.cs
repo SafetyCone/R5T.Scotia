@@ -23,7 +23,7 @@ namespace R5T.Scotia
         /// <summary>
         /// Adds a user secret file from the custom secrets directory (%User%/Dropbox/Rivet/Data/Secrets).
         /// </summary>
-        public static IConfigurationBuilder AddCustomUserSecretsFile(this IConfigurationBuilder configurationBuilder, string secretsFileName)
+        public static IConfigurationBuilder AddUserSecretsFileRivetLocation(this IConfigurationBuilder configurationBuilder, string secretsFileName)
         {
             // Build a service provider.
             var serviceProvider = new ServiceCollection()
