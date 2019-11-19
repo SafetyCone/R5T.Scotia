@@ -4,4 +4,14 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>1701;1702;1591;1573</NoWarn>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\R5T.Alamania.Bulgaria\source\R5T.Alamania.Bulgaria\R5T.Alamania.Bulgaria.csproj" />
+    <ProjectReference Include="..\..\..\R5T.Bulgaria.Default.Local\source\R5T.Bulgaria.Default.Local\R5T.Bulgaria.Default.Local.csproj" />
+    <ProjectReference Include="..\..\..\R5T.Chamavia\source\R5T.Chamavia\R5T.Chamavia.csproj" />
+    <ProjectReference Include="..\..\..\R5T.Costobocia.Default\source\R5T.Costobocia.Default\R5T.Costobocia.Default.csproj" />
+    <ProjectReference Include="..\..\..\R5T.Dacia\source\R5T.Dacia\R5T.Dacia.csproj" />
+    <ProjectReference Include="..\..\..\R5T.Lombardy\source\R5T.Lombardy\R5T.Lombardy.csproj" />
+    <ProjectReference Include="..\..\..\R5T.Suebia.Alamania\source\R5T.Suebia.Alamania\R5T.Suebia.Alamania.csproj" />
+    <ProjectReference Include="..\..\..\R5T.Visigothia.Default.Local\source\R5T.Visigothia.Default.Local\R5T.Visigothia.Default.Local.csproj" />
+  </ItemGroup>
 </Project>
