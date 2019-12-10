@@ -11,6 +11,7 @@ using R5T.Costobocia.Default;
 using R5T.Lombardy;
 using R5T.Suebia;
 using R5T.Suebia.Alamania;
+using R5T.Suebia.Default;
 using R5T.Visigothia;
 using R5T.Visigothia.Default.Local;
 
@@ -31,7 +32,7 @@ namespace R5T.Scotia.Extensions
                 .AddSingleton<IOrganizationStringlyTypedPathOperator, DefaultOrganizationStringlyTypedPathOperator>()
                 .AddSingleton<IRivetOrganizationDirectoryPathProvider, BulgariaRivetOrganizationDirectoryPathProvider>()
                 .AddSingleton<ISecretsDirectoryPathProvider, AlamaniaSecretsDirectoryPathProvider>()
-                .AddSingleton<ISecretsFilePathProvider, AlamaniaSecretsFilePathProvider>()
+                .AddSingleton<ISecretsFilePathProvider, DefaultSecretsFilePathProvider>()
                 ;
 
             return services;
