@@ -6,6 +6,7 @@ using R5T.Alamania;
 using R5T.Alamania.Bulgaria;
 using R5T.Bulgaria;
 using R5T.Bulgaria.Default.Local;
+using R5T.Dacia.Extensions;
 using R5T.Costobocia;
 using R5T.Costobocia.Default;
 using R5T.Lombardy;
@@ -20,10 +21,10 @@ namespace R5T.Scotia.Extensions
 {
     public static class IServicesCollectionExtensions
     {
-        public static IServiceCollection AddUserSecretFilesRivetLocation(this IServiceCollection services)
+        public static IServiceCollection AddAlamaniaSecretsDirectoyPathProviderServiceDependencies(this IServiceCollection services)
         {
             services
-                .AddSingleton<IStringlyTypedPathOperator, StringlyTypedPathOperator>()
+                .TryAddSingletonFluent<IStringlyTypedPathOperator, StringlyTypedPathOperator>() // Add if not already present.
 
                 .AddSingleton<IUserProfileDirectoryPathProvider, DefaultLocalUserProfileDirectoryPathProvider>()
                 .AddSingleton<IDropboxDirectoryPathProvider, DefaultLocalDropboxDirectoryPathProvider>()
@@ -31,6 +32,15 @@ namespace R5T.Scotia.Extensions
                 .AddSingleton<IOrganizationDirectoryNameProvider, DefaultOrganizationDirectoryNameProvider>()
                 .AddSingleton<IOrganizationStringlyTypedPathOperator, DefaultOrganizationStringlyTypedPathOperator>()
                 .AddSingleton<IRivetOrganizationDirectoryPathProvider, BulgariaRivetOrganizationDirectoryPathProvider>()
+                ;
+
+            return services;
+        }
+
+        public static IServiceCollection AddUserSecretFilesRivetLocation(this IServiceCollection services)
+        {
+            services
+                .AddAlamaniaSecretsDirectoyPathProviderServiceDependencies()
                 .AddSingleton<ISecretsDirectoryPathProvider, AlamaniaSecretsDirectoryPathProvider>()
                 .AddSingleton<ISecretsFilePathProvider, DefaultSecretsFilePathProvider>()
                 ;
