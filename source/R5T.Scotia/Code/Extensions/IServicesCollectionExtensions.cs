@@ -42,7 +42,7 @@ namespace R5T.Scotia.Extensions
             services
                 .AddAlamaniaSecretsDirectoyPathProviderServiceDependencies()
                 .AddSingleton<ISecretsDirectoryPathProvider, AlamaniaSecretsDirectoryPathProvider>()
-                .AddSingleton<ISecretsFilePathProvider, DefaultSecretsFilePathProvider>()
+                .AddSingleton<ISecretsDirectoryFilePathProvider, DefaultSecretsDirectoryFilePathProvider>()
                 ;
 
             return services;

@@ -23,7 +23,7 @@ namespace R5T.Scotia
                 .BuildServiceProvider();
 
             // Get the secrets file path provider.
-            var secretsFilePathProvider = serviceProvider.GetRequiredService<ISecretsFilePathProvider>();
+            var secretsFilePathProvider = serviceProvider.GetRequiredService<ISecretsDirectoryFilePathProvider>();
 
             // Get the path of the secrets file in the custom 
             var secretsFilePath = secretsFilePathProvider.GetSecretsFilePath(secretsFileName);
