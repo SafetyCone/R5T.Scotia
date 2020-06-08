@@ -1,4 +1,4 @@
-R5T.Scotia - A custom user secrets file combination library combining service libraries.
+R5T.Scotia - A custom user secrets file aggregation library combining service libraries.
 
 Goals
 

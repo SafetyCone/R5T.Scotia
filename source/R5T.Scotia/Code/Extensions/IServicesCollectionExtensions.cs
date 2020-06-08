@@ -6,6 +6,7 @@ using R5T.Alamania;
 using R5T.Alamania.Bulgaria;
 using R5T.Bulgaria;
 using R5T.Bulgaria.Default.Local;
+using R5T.Dacia;
 using R5T.Dacia.Extensions;
 using R5T.Costobocia;
 using R5T.Costobocia.Default;
@@ -21,28 +22,128 @@ namespace R5T.Scotia.Extensions
 {
     public static class IServicesCollectionExtensions
     {
-        public static IServiceCollection AddAlamaniaSecretsDirectoyPathProviderServiceDependencies(this IServiceCollection services)
+        public static
+            (
+            IServiceAction<IDropboxDirectoryPathProvider> DropboxDirectoryPathProviderAction,
+            IServiceAction<IOrganizationDirectoryNameProvider> OrganizationDirectoryNameProviderAction,
+            IServiceAction<IOrganizationsStringlyTypedPathOperator> OrganizationsStringlyTypedPathOperatorAction,
+            IServiceAction<IOrganizationStringlyTypedPathOperator> OrganizationStringlyTypedPathOperatorAction,
+            IServiceAction<IRivetOrganizationDirectoryPathProvider> RivetOrganizationDirectoryPathProviderAction,
+            IServiceAction<IUserProfileDirectoryPathProvider> UserProfileDirectoryPathProviderAction
+            )
+        AddRivetOrganizationDirectoryPathProviderAction(this IServiceCollection services,
+            IServiceAction<IStringlyTypedPathOperator> stringlyTypedPathOperatorAction)
+        {
+            // 0.
+            var organizationDirectoryNameProvider = services.AddOrganizationDirectoryNameProviderAction();
+            var userProfileDirectoryPathProviderAction = services.AddLocalUserProfileDirectoryPathProviderAction();
+
+            // 1.
+            var dropboxDirectoryPathProviderAction = services.AddLocalDropboxDirectoryPathProviderAction(
+                stringlyTypedPathOperatorAction,
+                userProfileDirectoryPathProviderAction);
+            var organizationsStringlyTypedPathOperatorAction = services.AddOrganizationsStringlyTypedPathOperatorAction(
+                stringlyTypedPathOperatorAction);
+
+            // 2.
+            var organizationStringlyTypedPathOperatorAction = services.AddOrganizationStringlyTypedPathOperatorAction(
+                organizationDirectoryNameProvider,
+                organizationsStringlyTypedPathOperatorAction,
+                stringlyTypedPathOperatorAction);
+
+            // 3.
+            var rivetOrganizationDirectoryPathProviderAction = services.AddRivetOrganizationDirectoryPathProviderAction(
+                dropboxDirectoryPathProviderAction,
+                organizationStringlyTypedPathOperatorAction);
+
+            services
+                .Run(rivetOrganizationDirectoryPathProviderAction)
+                ;
+
+            return
+                (
+                dropboxDirectoryPathProviderAction,
+                organizationDirectoryNameProvider,
+                organizationsStringlyTypedPathOperatorAction,
+                organizationStringlyTypedPathOperatorAction,
+                rivetOrganizationDirectoryPathProviderAction,
+                userProfileDirectoryPathProviderAction
+                );
+        }
+
+        public static 
+            (
+            IServiceAction<IRivetOrganizationSecretsDirectoryPathProvider> RivetOrganizationSecretsDirectoryPathProviderAction,
+            IServiceAction<ISecretsDirectoryFilePathProvider> SecretsDirectoryFilePathProviderAction,
+            IServiceAction<ISecretsDirectoryPathProvider> SecretsDirectoryPathProviderAction,
+            (
+            IServiceAction<IDropboxDirectoryPathProvider> DropboxDirectoryPathProviderAction,
+            IServiceAction<IOrganizationDirectoryNameProvider> OrganizationDirectoryNameProviderAction,
+            IServiceAction<IOrganizationsStringlyTypedPathOperator> OrganizationsStringlyTypedPathOperatorAction,
+            IServiceAction<IOrganizationStringlyTypedPathOperator> OrganizationStringlyTypedPathOperatorAction,
+            IServiceAction<IRivetOrganizationDirectoryPathProvider> RivetOrganizationDirectoryPathProviderAction,
+            IServiceAction<IUserProfileDirectoryPathProvider> UserProfileDirectoryPathProviderAction
+            ) RivetOrganizationDirectoryPathProviderAction
+            )
+        AddRivetOrganizationSecretDirectoryFilePathProviderAction(this IServiceCollection services,
+            IServiceAction<IStringlyTypedPathOperator> stringlyTypedPathOperatorAction)
+        {
+            // -1.
+#pragma warning disable IDE0042 // Deconstruct variable declaration
+            var rivetOrganizationDirectoryPathProviderAction = services.AddRivetOrganizationDirectoryPathProviderAction(
+                stringlyTypedPathOperatorAction);
+#pragma warning restore IDE0042 // Deconstruct variable declaration
+
+            // 1.
+            var rivetOrganizationSecretsDirectoryPathProviderAction = services.AddRivetOrganizationSecretsDirectoryPathProviderAction(
+                rivetOrganizationDirectoryPathProviderAction.RivetOrganizationDirectoryPathProviderAction,
+                stringlyTypedPathOperatorAction);
+
+            // 2.
+            var secretsDirectoryPathProviderAction = services.ForwardRivetOrganizationSecretsDirectoryPathProviderAsSecretsDirectoryPathProviderAction(
+                rivetOrganizationSecretsDirectoryPathProviderAction);
+
+            // 3.
+            var secretsDirectoryFilePathProviderAction = services.AddSecretsDirectoryFilePathProviderAction(
+                secretsDirectoryPathProviderAction,
+                stringlyTypedPathOperatorAction);
+
+            services
+                .Run(secretsDirectoryFilePathProviderAction)
+                ;
+
+            return
+                (
+                rivetOrganizationSecretsDirectoryPathProviderAction,
+                secretsDirectoryFilePathProviderAction,
+                secretsDirectoryPathProviderAction,
+                rivetOrganizationDirectoryPathProviderAction
+                );
+        }
+
+
+        public static IServiceCollection AddRivetOrganizationSecretsDirectoyPathProviderServiceDependencies(this IServiceCollection services)
         {
             services
                 .TryAddSingletonFluent<IStringlyTypedPathOperator, StringlyTypedPathOperator>() // Add if not already present.
 
-                .AddSingleton<IUserProfileDirectoryPathProvider, DefaultLocalUserProfileDirectoryPathProvider>()
-                .AddSingleton<IDropboxDirectoryPathProvider, DefaultLocalDropboxDirectoryPathProvider>()
-                .AddSingleton<IOrganizationsStringlyTypedPathOperator, DefaultOrganizationsStringlyTypedPathOperator>()
-                .AddSingleton<IOrganizationDirectoryNameProvider, DefaultOrganizationDirectoryNameProvider>()
-                .AddSingleton<IOrganizationStringlyTypedPathOperator, DefaultOrganizationStringlyTypedPathOperator>()
-                .AddSingleton<IRivetOrganizationDirectoryPathProvider, BulgariaRivetOrganizationDirectoryPathProvider>()
+                .AddSingleton<IUserProfileDirectoryPathProvider, LocalUserProfileDirectoryPathProvider>()
+                .AddSingleton<IDropboxDirectoryPathProvider, LocalDropboxDirectoryPathProvider>()
+                .AddSingleton<IOrganizationsStringlyTypedPathOperator, OrganizationsStringlyTypedPathOperator>()
+                .AddSingleton<IOrganizationDirectoryNameProvider, OrganizationDirectoryNameProvider>()
+                .AddSingleton<IOrganizationStringlyTypedPathOperator, OrganizationStringlyTypedPathOperator>()
+                .AddSingleton<IRivetOrganizationDirectoryPathProvider, RivetOrganizationDirectoryPathProvider>()
                 ;
 
             return services;
         }
 
-        public static IServiceCollection AddUserSecretFilesRivetLocation(this IServiceCollection services)
+        public static IServiceCollection AddRivetOrganizationSecretFilesLocation(this IServiceCollection services)
         {
             services
-                .AddAlamaniaSecretsDirectoyPathProviderServiceDependencies()
-                .AddSingleton<ISecretsDirectoryPathProvider, AlamaniaSecretsDirectoryPathProvider>()
-                .AddSingleton<ISecretsDirectoryFilePathProvider, DefaultSecretsDirectoryFilePathProvider>()
+                .AddRivetOrganizationSecretsDirectoyPathProviderServiceDependencies()
+                .AddSingleton<ISecretsDirectoryPathProvider, RivetOrganizationSecretsDirectoryPathProvider>()
+                .AddSingleton<ISecretsDirectoryFilePathProvider, SecretsDirectoryFilePathProvider>()
                 ;
 
             return services;

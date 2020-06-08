@@ -19,7 +19,7 @@ namespace R5T.Scotia
         {
             // Build a service provider.
             var serviceProvider = new ServiceCollection()
-                .AddUserSecretFilesRivetLocation()
+                .AddRivetOrganizationSecretFilesLocation()
                 .BuildServiceProvider();
 
             // Get the secrets file path provider.
