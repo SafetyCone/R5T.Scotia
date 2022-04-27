@@ -35,24 +35,24 @@ namespace R5T.Scotia.Extensions
             IServiceAction<IStringlyTypedPathOperator> stringlyTypedPathOperatorAction)
         {
             // 0.
-            var organizationDirectoryNameProvider = services.AddOrganizationDirectoryNameProviderAction();
-            var userProfileDirectoryPathProviderAction = services.AddLocalUserProfileDirectoryPathProviderAction();
+            var organizationDirectoryNameProvider = services.AddOrganizationDirectoryNameProviderAction_Old();
+            var userProfileDirectoryPathProviderAction = services.AddLocalUserProfileDirectoryPathProviderAction_Old();
 
             // 1.
-            var dropboxDirectoryPathProviderAction = services.AddLocalDropboxDirectoryPathProviderAction(
+            var dropboxDirectoryPathProviderAction = services.AddLocalDropboxDirectoryPathProviderAction_Old(
                 stringlyTypedPathOperatorAction,
                 userProfileDirectoryPathProviderAction);
-            var organizationsStringlyTypedPathOperatorAction = services.AddOrganizationsStringlyTypedPathOperatorAction(
+            var organizationsStringlyTypedPathOperatorAction = services.AddOrganizationsStringlyTypedPathOperatorAction_Old(
                 stringlyTypedPathOperatorAction);
 
             // 2.
-            var organizationStringlyTypedPathOperatorAction = services.AddOrganizationStringlyTypedPathOperatorAction(
+            var organizationStringlyTypedPathOperatorAction = services.AddOrganizationStringlyTypedPathOperatorAction_Old(
                 organizationDirectoryNameProvider,
                 organizationsStringlyTypedPathOperatorAction,
                 stringlyTypedPathOperatorAction);
 
             // 3.
-            var rivetOrganizationDirectoryPathProviderAction = services.AddRivetOrganizationDirectoryPathProviderAction(
+            var rivetOrganizationDirectoryPathProviderAction = services.AddRivetOrganizationDirectoryPathProviderAction_Old(
                 dropboxDirectoryPathProviderAction,
                 organizationStringlyTypedPathOperatorAction);
 
@@ -89,22 +89,22 @@ namespace R5T.Scotia.Extensions
             IServiceAction<IStringlyTypedPathOperator> stringlyTypedPathOperatorAction)
         {
             // -1.
-#pragma warning disable IDE0042 // Deconstruct variable declaration
+//#pragma warning disable IDE0042 // Deconstruct variable declaration
             var rivetOrganizationDirectoryPathProviderAction = services.AddRivetOrganizationDirectoryPathProviderAction(
                 stringlyTypedPathOperatorAction);
-#pragma warning restore IDE0042 // Deconstruct variable declaration
+//#pragma warning restore IDE0042 // Deconstruct variable declaration
 
             // 1.
-            var rivetOrganizationSecretsDirectoryPathProviderAction = services.AddRivetOrganizationSecretsDirectoryPathProviderAction(
+            var rivetOrganizationSecretsDirectoryPathProviderAction = services.AddRivetOrganizationSecretsDirectoryPathProviderAction_Old(
                 rivetOrganizationDirectoryPathProviderAction.RivetOrganizationDirectoryPathProviderAction,
                 stringlyTypedPathOperatorAction);
 
             // 2.
-            var secretsDirectoryPathProviderAction = services.ForwardRivetOrganizationSecretsDirectoryPathProviderAsSecretsDirectoryPathProviderAction(
+            var secretsDirectoryPathProviderAction = services.ForwardRivetOrganizationSecretsDirectoryPathProviderAsSecretsDirectoryPathProviderAction_Old(
                 rivetOrganizationSecretsDirectoryPathProviderAction);
 
             // 3.
-            var secretsDirectoryFilePathProviderAction = services.AddSecretsDirectoryFilePathProviderAction(
+            var secretsDirectoryFilePathProviderAction = services.AddSecretsDirectoryFilePathProviderAction_Old(
                 secretsDirectoryPathProviderAction,
                 stringlyTypedPathOperatorAction);
 
